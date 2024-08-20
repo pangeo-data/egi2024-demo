@@ -31,5 +31,5 @@ There is no prerequisites to join the Pangeo@EOSC demo but if you want later on 
 
 ## Set up
 
-If you are participating in this demo, you are welcome to register to [Pangeo@EOSC](https://pangeo-data.github.io/pangeo-eosc/) following the instructions given at [getting started for users](https://pangeo-data.github.io/pangeo-eosc/users/users-getting-started.html).
+If you are participating in this demo, you are welcome to register to [Pangeo@EOSC](https://pangeo-data.github.io/pangeo-eosc/) following the instructions given at [getting started for users](https://pangeo-data.github.io/egi2024-demo/users-getting-started.html).
 
