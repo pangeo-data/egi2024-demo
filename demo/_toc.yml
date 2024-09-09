@@ -5,9 +5,15 @@ parts:
     chapters:
       - file: pangeo
       - file: users-getting-started
-  - caption: Demo with pytorch notebooks
+  - caption: Demo with Pytorch notebook
     chapters:
     - file: landslide_xbatcher
+  - caption: Demo with ML notebook with tensorflow and Dask
+    chapters:
+    - file: SST_AI
+  - caption: Demo with Julia notebook
+    chapters:
+    - file: RasterJulia
   - caption: Beyond the demo
     chapters:
     - file: afterword/resources
