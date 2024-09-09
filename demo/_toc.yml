@@ -13,7 +13,8 @@ parts:
     - file: SST_AI
   - caption: Demo with Julia notebook
     chapters:
-    - file: RasterJulia
+    - file: intro_YAXArrays/intro_YAXArrays
+    - file: RasterJulia/RasterJulia
   - caption: Beyond the demo
     chapters:
     - file: afterword/resources
