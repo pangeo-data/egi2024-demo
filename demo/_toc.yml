@@ -5,6 +5,9 @@ parts:
     chapters:
       - file: pangeo
       - file: users-getting-started
+  - caption: Demo with Pangeo notebook
+    chapters:
+    - file: pangeo_hvplot
   - caption: Demo with Pytorch notebook
     chapters:
     - file: landslide_xbatcher
@@ -15,6 +18,12 @@ parts:
     chapters:
     - file: intro_YAXArrays/intro_YAXArrays
     - file: RasterJulia/RasterJulia
+  - caption: Pangeo notebook for Bio-imaging 
+    chapters:
+    - file: bio-imaging
+  - caption: Pangeo ML notebook for Astronomy
+    chapters:
+    - file: Demo_Synthesis
   - caption: Beyond the demo
     chapters:
     - file: afterword/resources
