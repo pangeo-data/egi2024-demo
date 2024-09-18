@@ -5,10 +5,11 @@
 % The article should include an abstract block at the beginning. The block is delimited by `+++` before and after, and you must specify `"part": "abstract"` as JSON metadata on the block opener. This metadata is required for recognizing the content of this cell as the abstract.
 % The abstract should begin with a short description of the problem addressed, briefly describe the new data or analyses, then briefly state the main conclusion(s) and how they are supported, and address any uncertainty.
 
-This demo is created in collaboration with European Pangeo community and EGI.
+Join us at [EGI'24](https://www.egi.eu/event/egi2024/#programme) on **October 3, 2024**, from **12:30 to 13:00 (Barocco)**.
 
 This demo will provide a comprehensive overview of Pangeo@EOSC to help you understand how this EOSC service can be used for Earth science data analysis and interpretation.
 
+This demo is created in collaboration with European Pangeo community and EGI.
 +++
 
 
