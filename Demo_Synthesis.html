@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Creating a global map using foscat from a single model &#8212; EGI 2024 - Pangeo@EOSC demo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Demo_Synthesis';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Join the community!" href="afterword/resources.html" />
+    <link rel="prev" title="Introduction to cloud-optimized bioimaging with OME-Zarr" href="bio-imaging.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/pangeo-logo.png" class="logo__image only-light" alt="EGI 2024 - Pangeo@EOSC demo - Home"/>
+    <script>document.write(`<img src="_static/pangeo-logo.png" class="logo__image only-dark" alt="EGI 2024 - Pangeo@EOSC demo - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    About
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo and EOSC in a nutshell</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pangeo.html">EOSC and the Pangeo community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="users-getting-started.html">Registration to Pangeo@EOSC</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Pangeo notebook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pangeo_hvplot.html">Interactive visualization of vegetation indices (NDVI) with HoloViews</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Pytorch notebook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="landslide_xbatcher.html">Rapid Landslide Detection using Synthetic Aperture Radar (SAR) Datacubes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with ML notebook with tensorflow and Dask</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="SST_AI.html">Applying Cross Scattering Transform in Earth Observation imagery to fill missing values</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Julia notebook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro_YAXArrays/intro_YAXArrays.html">YAXArrays and mapCube in Julia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RasterJulia/RasterJulia.html">Raster analysis in Julia</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo notebook for Bio-imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="bio-imaging.html">Introduction to cloud-optimized bioimaging with OME-Zarr</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo ML notebook for Astronomy</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Creating a global map using foscat from a single model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Beyond the demo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="afterword/resources.html">Join the community!</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="afterword/pythia.html">Project Pythia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="afterword/edsbook.html">Environmental Data Science Book</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://notebooks.gesis.org/binder/v2/gh/pangeo-data/egi2024-demo/main?urlpath=lab/tree/demo/Demo_Synthesis.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="http://pangeo-eosc.vm.fedcloud.eu/jupyterhub/hub/user-redirect/git-pull?repo=https%3A//github.com/pangeo-data/egi2024-demo&urlpath=lab/tree/egi2024-demo/demo/Demo_Synthesis.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pangeo-data/egi2024-demo" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pangeo-data/egi2024-demo/issues/new?title=Issue%20on%20page%20%2FDemo_Synthesis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Demo_Synthesis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Creating a global map using foscat from a single model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authors-contributors">Authors &amp; Contributors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#authors">Authors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context">Context</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-method">The method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-further-details-on-the-synthesis-domain-please-refer-to">For further details on the synthesis domain, please refer to:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-of-required-packages">Installation of required packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-in-healpix">Convert Data in HEALPix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordering-systems">Ordering Systems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-resolution">choose the resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-large-scale-structure-data">Get Large Scale Structure data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialise-foscat-scattering-covariance-description">Initialise FOSCAT scattering covariance description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-reference-statistics">Compute the reference statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-loss-function">Define the loss function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-synthesis-model">Build the synthesis model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-synthesis">Run the synthesis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-results">Plot the results</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="creating-a-global-map-using-foscat-from-a-single-model">
+<h1>Creating a global map using foscat from a single model<a class="headerlink" href="#creating-a-global-map-using-foscat-from-a-single-model" title="Link to this heading">#</a></h1>
+<section id="authors-contributors">
+<h2>Authors &amp; Contributors<a class="headerlink" href="#authors-contributors" title="Link to this heading">#</a></h2>
+<section id="authors">
+<h3>Authors<a class="headerlink" href="#authors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Jean-Marc Delouis, LOPS - Laboratoire d’Oceanographie Physique et Spatiale, UMR 6523 CNRS-IFREMER-IRD-Univ.Brest-I (France)</p></li>
+</ul>
+</section>
+<section id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Tina Odaka, LOPS - Laboratoire d’Oceanographie Physique et Spatiale, UMR 6523 CNRS-IFREMER-IRD-Univ.Brest (France)</p></li>
+</ul>
+</section>
+</section>
+<section id="context">
+<h2>Context<a class="headerlink" href="#context" title="Link to this heading">#</a></h2>
+<p>This notebook demonstrates the use of FOSCAT packages to synthesize new maps from an initial target map. The synthesized maps retain the same Scattering Covariance (SC) statistics as the target map. The target map is here a Large Scale Structure simulation of weak lensing, from the CosmoGrid data set (Kacprzak et al. 2023; Fluri et al. 2022); utilized in this example is identical to the one in Mousset et al. (submitted 2024), and the synthesis method is nearly the same.</p>
+<section id="the-method">
+<h3>The method<a class="headerlink" href="#the-method" title="Link to this heading">#</a></h3>
+<p>The idea is to calculate the SC statistic <span class="math notranslate nohighlight">\(\Phi(d)\)</span> for the target map <span class="math notranslate nohighlight">\(d\)</span> and generate a new map <span class="math notranslate nohighlight">\(u\)</span> that minimizes the following loss:
+<span class="math notranslate nohighlight">\(L = \sum_k{\frac{(\Phi(d)_k - \Phi(u)_k)^{2}}{\sigma_k^{2}}}\)</span></p>
+<p>Here, <span class="math notranslate nohighlight">\(k\)</span> denotes the <span class="math notranslate nohighlight">\(k^{th}\)</span> SC coefficients, and <span class="math notranslate nohighlight">\(\sigma_k^{2}\)</span> represents the variance of <span class="math notranslate nohighlight">\(\Phi(d)_k\)</span> across the target map. Specifically, <span class="math notranslate nohighlight">\(\Phi(d)_k\)</span> values are obtained by integrating over the entire domain wavelet maps, while <span class="math notranslate nohighlight">\(\sigma_k^{2}\)</span> values correspond to the variance within this domain.</p>
+<p>The map <span class="math notranslate nohighlight">\(u\)</span> is initially set to random Gaussian noise, and the final result is obtained by iteratively minimizing <span class="math notranslate nohighlight">\(L\)</span> using gradient descent. The resulting map <span class="math notranslate nohighlight">\(u\)</span> is then returned.</p>
+</section>
+<section id="for-further-details-on-the-synthesis-domain-please-refer-to">
+<h3>For further details on the synthesis domain, please refer to:<a class="headerlink" href="#for-further-details-on-the-synthesis-domain-please-refer-to" title="Link to this heading">#</a></h3>
+<p>Fluri, J., Kacprzak, T., Lucchi, A., et al. 2022, Phys. Rev. D, 105, 083518</p>
+<p>Kacprzak, T., Fluri, J., Schneider, A., Refregier, A., &amp; Stadel, J. 2023, Journal of
+Cosmology and Astroparticle Physics, 2023, 05</p>
+<p>Mousset, L., Allys E.,  Pric, M. A., . Aumo, J., Delouis, J.-M., Montier, L., McEwen, J. D., Sumitted 2024 Astronomy &amp; Astrophysicwen2
+07</p>
+</section>
+</section>
+<section id="installation-of-required-packages">
+<h2>Installation of required packages<a class="headerlink" href="#installation-of-required-packages" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">foscat</span><span class="o">==</span><span class="m">3</span>.1.3
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting foscat==3.1.3
+  Using cached foscat-3.1.3-py3-none-any.whl.metadata (1.0 kB)
+Requirement already satisfied: imageio in /srv/conda/envs/notebook/lib/python3.12/site-packages (from foscat==3.1.3) (2.34.2)
+Requirement already satisfied: imagecodecs in /srv/conda/envs/notebook/lib/python3.12/site-packages (from foscat==3.1.3) (2024.6.1)
+Requirement already satisfied: matplotlib in /srv/conda/envs/notebook/lib/python3.12/site-packages (from foscat==3.1.3) (3.9.2)
+Requirement already satisfied: numpy in /srv/conda/envs/notebook/lib/python3.12/site-packages (from foscat==3.1.3) (1.26.4)
+Requirement already satisfied: tensorflow in /srv/conda/envs/notebook/lib/python3.12/site-packages (from foscat==3.1.3) (2.16.2)
+Collecting healpy (from foscat==3.1.3)
+  Using cached healpy-1.17.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (8.9 kB)
+Requirement already satisfied: astropy in /srv/conda/envs/notebook/lib/python3.12/site-packages (from healpy-&gt;foscat==3.1.3) (6.1.2)
+Requirement already satisfied: pillow&gt;=8.3.2 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from imageio-&gt;foscat==3.1.3) (10.4.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (1.2.1)
+Requirement already satisfied: cycler&gt;=0.10 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (0.12.1)
+Requirement already satisfied: fonttools&gt;=4.22.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (4.53.1)
+Requirement already satisfied: kiwisolver&gt;=1.3.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (1.4.5)
+Requirement already satisfied: packaging&gt;=20.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (24.1)
+Requirement already satisfied: pyparsing&gt;=2.3.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (3.1.2)
+Requirement already satisfied: python-dateutil&gt;=2.7 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from matplotlib-&gt;foscat==3.1.3) (2.8.2)
+Requirement already satisfied: absl-py&gt;=1.0.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (2.1.0)
+Requirement already satisfied: astunparse&gt;=1.6.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (1.6.3)
+Requirement already satisfied: flatbuffers&gt;=23.5.26 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (24.3.25)
+Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,&gt;=0.2.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (0.5.5)
+Requirement already satisfied: google-pasta&gt;=0.1.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (0.2.0)
+Requirement already satisfied: h5py&gt;=3.10.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (3.11.0)
+Requirement already satisfied: ml-dtypes~=0.3.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (0.3.2)
+Requirement already satisfied: opt-einsum&gt;=2.3.2 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (3.3.0)
+Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,&lt;5.0.0dev,&gt;=3.20.3 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (4.25.3)
+Requirement already satisfied: requests&lt;3,&gt;=2.21.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (2.32.3)
+Requirement already satisfied: setuptools in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (72.1.0)
+Requirement already satisfied: six&gt;=1.12.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (1.16.0)
+Requirement already satisfied: termcolor&gt;=1.1.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (2.4.0)
+Requirement already satisfied: typing-extensions&gt;=3.6.6 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (4.12.2)
+Requirement already satisfied: wrapt&gt;=1.11.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (1.16.0)
+Requirement already satisfied: grpcio&lt;2.0,&gt;=1.24.3 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (1.62.2)
+Requirement already satisfied: tensorboard&lt;2.17,&gt;=2.16 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (2.16.2)
+Requirement already satisfied: keras&gt;=3.0.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorflow-&gt;foscat==3.1.3) (3.5.0)
+Requirement already satisfied: wheel&lt;1.0,&gt;=0.23.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from astunparse&gt;=1.6.0-&gt;tensorflow-&gt;foscat==3.1.3) (0.44.0)
+Requirement already satisfied: rich in /srv/conda/envs/notebook/lib/python3.12/site-packages (from keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (13.7.1)
+Requirement already satisfied: namex in /srv/conda/envs/notebook/lib/python3.12/site-packages (from keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (0.0.8)
+Requirement already satisfied: optree in /srv/conda/envs/notebook/lib/python3.12/site-packages (from keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (0.12.1)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from requests&lt;3,&gt;=2.21.0-&gt;tensorflow-&gt;foscat==3.1.3) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from requests&lt;3,&gt;=2.21.0-&gt;tensorflow-&gt;foscat==3.1.3) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from requests&lt;3,&gt;=2.21.0-&gt;tensorflow-&gt;foscat==3.1.3) (1.26.19)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from requests&lt;3,&gt;=2.21.0-&gt;tensorflow-&gt;foscat==3.1.3) (2024.7.4)
+Requirement already satisfied: markdown&gt;=2.6.8 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorboard&lt;2.17,&gt;=2.16-&gt;tensorflow-&gt;foscat==3.1.3) (3.6)
+Requirement already satisfied: tensorboard-data-server&lt;0.8.0,&gt;=0.7.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorboard&lt;2.17,&gt;=2.16-&gt;tensorflow-&gt;foscat==3.1.3) (0.7.0)
+Requirement already satisfied: werkzeug&gt;=1.0.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from tensorboard&lt;2.17,&gt;=2.16-&gt;tensorflow-&gt;foscat==3.1.3) (3.0.3)
+Requirement already satisfied: pyerfa&gt;=2.0.1.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from astropy-&gt;healpy-&gt;foscat==3.1.3) (2.0.1.4)
+Requirement already satisfied: astropy-iers-data&gt;=0.2024.7.1.0.34.3 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from astropy-&gt;healpy-&gt;foscat==3.1.3) (0.2024.8.5.0.32.23)
+Requirement already satisfied: PyYAML&gt;=3.13 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from astropy-&gt;healpy-&gt;foscat==3.1.3) (6.0.2)
+Requirement already satisfied: MarkupSafe&gt;=2.1.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from werkzeug&gt;=1.0.1-&gt;tensorboard&lt;2.17,&gt;=2.16-&gt;tensorflow-&gt;foscat==3.1.3) (2.1.5)
+Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from rich-&gt;keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (3.0.0)
+Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from rich-&gt;keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (2.18.0)
+Requirement already satisfied: mdurl~=0.1 in /srv/conda/envs/notebook/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras&gt;=3.0.0-&gt;tensorflow-&gt;foscat==3.1.3) (0.1.2)
+Using cached foscat-3.1.3-py3-none-any.whl (73 kB)
+Using cached healpy-1.17.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (8.5 MB)
+Installing collected packages: healpy, foscat
+Successfully installed foscat-3.1.3 healpy-1.17.3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">healpy</span> <span class="k">as</span> <span class="nn">hp</span>
+<span class="kn">import</span> <span class="nn">foscat.scat_cov</span> <span class="k">as</span> <span class="nn">sc</span>
+<span class="kn">import</span> <span class="nn">foscat.Synthesis</span> <span class="k">as</span> <span class="nn">synthe</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="convert-data-in-healpix">
+<h2>Convert Data in HEALPix<a class="headerlink" href="#convert-data-in-healpix" title="Link to this heading">#</a></h2>
+<p>The above gap-filling method does not take into account that our subject is a sphere. Because we work with full globe data, we need to treat the grid system that conveys the shape of the sphere. To do that, we use one of the Discrete Global Grid Systems (DGGS), HEALPix.</p>
+<p>HEALPix stands for Hierarchical Equal Area isoLatitude Pixelation of a sphere. This pixelation produces a subdivision of a spherical surface in which each pixel covers the same surface area as every other pixel.
+<img alt="HEALPix" src="https://healpix.sourceforge.io/images/gorski_f1.jpg" /></p>
+<p>See <a class="reference external" href="https://healpix.sourceforge.io">https://healpix.sourceforge.io</a> and/or <a class="reference external" href="https://healpix.jpl.nasa.gov/pdf/intro.pdf">the HEALPix Primer</a> for more information.</p>
+<p>The <a class="reference external" href="https://healpy.readthedocs.io/en/latest/tutorial.html#NSIDE-and-ordering">healpy tutorial</a> is also a very good starting point to understand more about HEALPix.</p>
+<section id="resolution">
+<h3>Resolution<a class="headerlink" href="#resolution" title="Link to this heading">#</a></h3>
+<p>The resolution of the grid is expressed by the parameter <code class="docutils literal notranslate"><span class="pre">Nside</span></code>, which defines the number of divisions along the side of a base-resolution pixel that is needed to reach a desired high-resolution partition.</p>
+</section>
+<section id="ordering-systems">
+<h3>Ordering Systems<a class="headerlink" href="#ordering-systems" title="Link to this heading">#</a></h3>
+<p>HEALPix supports two pixel ordering systems: <code class="docutils literal notranslate"><span class="pre">nested</span></code> and <code class="docutils literal notranslate"><span class="pre">ring</span></code>.</p>
+<p>Detailed explanations of the two pixel ordering systems can be found at <a class="reference external" href="https://healpix.jpl.nasa.gov/html/intronode4.htm">https://healpix.jpl.nasa.gov/html/intronode4.htm</a>.</p>
+<p>In our exam</p>
+</section>
+<section id="choose-the-resolution">
+<h3>choose the resolution<a class="headerlink" href="#choose-the-resolution" title="Link to this heading">#</a></h3>
+<p>we use <span class="math notranslate nohighlight">\(nside=64\)</span> in this context to prevent excessive computation.ple we use <code class="docutils literal notranslate"><span class="pre">nested</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nside</span><span class="o">=</span><span class="mi">64</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="get-large-scale-structure-data">
+<h3>Get Large Scale Structure data<a class="headerlink" href="#get-large-scale-structure-data" title="Link to this heading">#</a></h3>
+<p>The target map is here a LSS simulation of weak lensing, from the CosmoGrid data set (Kacprzak et al. 2023; Fluri et al. 2022);</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>wget<span class="w"> </span>-O<span class="w"> </span>target_map_lss.npy<span class="w"> </span>https://github.com/astro-informatics/s2scat/raw/main/notebooks/data/target_map_lss.npy
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>--2024-09-09 18:40:02--  https://github.com/astro-informatics/s2scat/raw/main/notebooks/data/target_map_lss.npy
+Resolving github.com (github.com)... 140.82.121.4
+Connecting to github.com (github.com)|140.82.121.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/astro-informatics/s2scat/main/notebooks/data/target_map_lss.npy [following]
+--2024-09-09 18:40:02--  https://raw.githubusercontent.com/astro-informatics/s2scat/main/notebooks/data/target_map_lss.npy
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 2606:50c0:8002::154, 2606:50c0:8000::154, 2606:50c0:8001::154, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|2606:50c0:8002::154|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1046656 (1022K) [application/octet-stream]
+Saving to: ‘target_map_lss.npy’
+
+target_map_lss.npy  100%[===================&gt;]   1022K  --.-KB/s    in 0.04s   
+
+2024-09-09 18:40:03 (23.7 MB/s) - ‘target_map_lss.npy’ saved [1046656/1046656]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+
+<span class="c1"># convert the input data in a nside=128 healpix map</span>
+<span class="n">l_nside</span><span class="o">=</span><span class="mi">128</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;target_map_lss.npy&#39;</span><span class="p">)</span>
+<span class="n">xsize</span><span class="p">,</span><span class="n">ysize</span><span class="o">=</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="c1"># Define the new row and column to be added to prepare the interpolation</span>
+<span class="n">new_row</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:]</span>  <span class="c1"># A new row with N elements (the other longitude)</span>
+<span class="n">new_column</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">im</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">],</span><span class="n">im</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]],</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># A new column with N+1 elements to add previous latitude</span>
+
+<span class="c1"># Add the new row to the array</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">im</span><span class="p">,</span> <span class="n">new_row</span><span class="p">])</span>
+
+<span class="c1"># Add the new column to the array with the new row</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">im</span><span class="p">,</span> <span class="n">new_column</span><span class="p">])</span>
+
+<span class="c1"># Create a grid of coordinates corresponding to the array indices</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Create an interpolator</span>
+<span class="n">interpolator</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">im</span><span class="p">)</span>
+
+<span class="c1"># List of healpix coordinate to interpol</span>
+<span class="n">colatitude</span><span class="p">,</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">pix2ang</span><span class="p">(</span><span class="n">l_nside</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">l_nside</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">colatitude</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">xsize</span><span class="p">,</span><span class="n">longitude</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">*</span><span class="n">ysize</span><span class="p">],</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">colatitude</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+
+<span class="c1"># Perform the interpolation</span>
+<span class="n">heal_im</span> <span class="o">=</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+<span class="c1">#reduce the final map to the expected resolution</span>
+<span class="k">if</span> <span class="n">nside</span><span class="o">&gt;</span><span class="mi">128</span><span class="p">:</span>
+    <span class="n">th</span><span class="p">,</span><span class="n">ph</span><span class="o">=</span><span class="n">hp</span><span class="o">.</span><span class="n">pix2ang</span><span class="p">(</span><span class="n">nside</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">nside</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">heal_im</span><span class="o">=</span><span class="n">hp</span><span class="o">.</span><span class="n">get_interp_val</span><span class="p">(</span><span class="n">heal_im</span><span class="p">,</span><span class="n">th</span><span class="p">,</span><span class="n">ph</span><span class="p">,</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">heal_im</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">heal_im</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">nside</span><span class="o">**</span><span class="mi">2</span><span class="p">,(</span><span class="n">l_nside</span><span class="o">//</span><span class="n">nside</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">hp</span><span class="o">.</span><span class="n">mollview</span><span class="p">(</span><span class="n">heal_im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;LSS&#39;</span><span class="p">,</span><span class="nb">min</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="nb">max</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># free memory</span>
+<span class="k">del</span> <span class="n">coords</span>
+<span class="k">del</span> <span class="n">interpolator</span>
+<span class="k">del</span> <span class="n">colatitude</span>
+<span class="k">del</span> <span class="n">longitude</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b72162733d213da14dababda9c27d4f3a931235e8762b29b66b6403592b3fae7.png" src="_images/b72162733d213da14dababda9c27d4f3a931235e8762b29b66b6403592b3fae7.png" />
+</div>
+</div>
+</section>
+<section id="initialise-foscat-scattering-covariance-description">
+<h3>Initialise FOSCAT scattering covariance description<a class="headerlink" href="#initialise-foscat-scattering-covariance-description" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scat_op</span><span class="o">=</span><span class="n">sc</span><span class="o">.</span><span class="n">funct</span><span class="p">(</span><span class="n">NORIENT</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>          <span class="c1"># define the number of wavelet orientation</span>
+                <span class="n">KERNELSZ</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1">#KERNELSZ,  # define the kernel size</span>
+                <span class="n">JmaxDelta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>        <span class="c1"># The used Jmax is Jmax-JmaxDelta        </span>
+                <span class="n">all_type</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>================================================
+          START FOSCAT CONFIGURATION
+================================================
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-09-09 18:40:15.486772: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:10575] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+2024-09-09 18:40:15.486800: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:479] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+2024-09-09 18:40:15.488952: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1442] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-09-09 18:40:15.494428: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE4.1 SSE4.2 AVX AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Num GPUs Available:  1
+1 Physical GPUs, 1 Logical GPUs
+============================================================
+==                                                        ==
+==                                                        ==
+==     RUN ON GPU Rank 0 : /device:GPU:0                          ==
+==                                                        ==
+==                                                        ==
+============================================================
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-09-09 18:40:17.723128: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1928] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 43598 MB memory:  -&gt; device: 0, name: NVIDIA A40, pci bus id: 0000:a3:00.0, compute capability: 8.6
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Init Wave  2
+Init Wave  4
+Init Wave  8
+Init Wave  16
+Init Wave  32
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-the-reference-statistics">
+<h3>Compute the reference statistics<a class="headerlink" href="#compute-the-reference-statistics" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span><span class="p">,</span><span class="n">sref</span><span class="o">=</span><span class="n">scat_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">heal_im</span><span class="p">,</span><span class="n">calc_var</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;LSS&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">sref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Variance&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b5d25333fcc69fa2893fb5b83f7d7c9481dc91e013b526cbec5135c49236aa8b.png" src="_images/b5d25333fcc69fa2893fb5b83f7d7c9481dc91e013b526cbec5135c49236aa8b.png" />
+</div>
+</div>
+</section>
+<section id="define-the-loss-function">
+<h3>Define the loss function<a class="headerlink" href="#define-the-loss-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">The_loss</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">scat_operator</span><span class="p">,</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">ref</span>  <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sref</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># compute scattering covariance of the current synthetised map called u</span>
+    <span class="n">learn</span><span class="o">=</span><span class="n">scat_operator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+    <span class="c1"># make the difference withe the reference coordinates</span>
+    <span class="n">loss</span><span class="o">=</span><span class="n">scat_operator</span><span class="o">.</span><span class="n">reduce_distance</span><span class="p">(</span><span class="n">learn</span><span class="p">,</span><span class="n">ref</span><span class="p">,</span><span class="n">sigma</span><span class="o">=</span><span class="n">sref</span><span class="p">)</span>
+
+    <span class="k">return</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="build-the-synthesis-model">
+<h3>Build the synthesis model<a class="headerlink" href="#build-the-synthesis-model" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss1</span><span class="o">=</span><span class="n">synthe</span><span class="o">.</span><span class="n">Loss</span><span class="p">(</span><span class="n">The_loss</span><span class="p">,</span><span class="n">scat_op</span><span class="p">,</span><span class="n">ref</span><span class="p">,</span><span class="n">sref</span><span class="p">)</span>
+
+<span class="n">sy</span> <span class="o">=</span> <span class="n">synthe</span><span class="o">.</span><span class="n">Synthesis</span><span class="p">([</span><span class="n">loss1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="run-the-synthesis">
+<h3>Run the synthesis<a class="headerlink" href="#run-the-synthesis" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imap</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">12</span><span class="o">*</span><span class="n">nside</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">heal_im</span><span class="p">)</span>
+<span class="n">inscat</span><span class="o">=</span><span class="n">scat_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">imap</span><span class="p">)</span>
+
+<span class="n">omap</span><span class="o">=</span><span class="n">sy</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">imap</span><span class="p">,</span>
+            <span class="n">EVAL_FREQUENCY</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">NUM_EPOCHS</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total number of loss  1
+ Run [PROC=0000] on GPU /device:GPU:0
+WARNING:tensorflow:AutoGraph could not transform &lt;bound method Socket.send of &lt;zmq.Socket(zmq.PUSH) at 0x7f57603fa890&gt;&gt; and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: module, class, method, function, traceback, frame, or code object was expected, got cython_function_or_method
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+WARNING: AutoGraph could not transform &lt;bound method Socket.send of &lt;zmq.Socket(zmq.PUSH) at 0x7f57603fa890&gt;&gt; and will run it as-is.
+Please report this to the TensorFlow team. When filing the bug, set the verbosity to 10 (on Linux, `export AUTOGRAPH_VERBOSITY=10`) and attach the full output.
+Cause: module, class, method, function, traceback, frame, or code object was expected, got cython_function_or_method
+To silence this warning, decorate the function with @tf.autograph.experimental.do_not_convert
+Itt      0 L=  2.15e+03 (  2.15e+03 ) 24.433s 
+Itt    100 L=      6.18 (      6.18 ) 2.853s 
+Itt    200 L=      2.36 (      2.36 ) 2.857s 
+Itt    300 L=       1.5 (       1.5 ) 2.967s 
+Itt    400 L=      1.16 (      1.16 ) 2.771s 
+Itt    500 L=     0.982 (     0.982 ) 2.875s 
+Itt    600 L=     0.855 (     0.855 ) 2.831s 
+Itt    700 L=     0.763 (     0.763 ) 2.791s 
+Itt    800 L=     0.701 (     0.701 ) 2.795s 
+Itt    900 L=     0.649 (     0.649 ) 2.790s 
+Itt   1000 L=     0.616 (     0.616 ) 2.815s 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-the-results">
+<h3>Plot the results<a class="headerlink" href="#plot-the-results" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">hp</span><span class="o">.</span><span class="n">mollview</span><span class="p">(</span><span class="n">heal_im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Target LSS&#39;</span><span class="p">,</span><span class="nb">min</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="nb">max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">hold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">sub</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">hp</span><span class="o">.</span><span class="n">mollview</span><span class="p">(</span><span class="n">omap</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">,</span><span class="n">nest</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Synthesised LSS&#39;</span><span class="p">,</span><span class="nb">min</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="nb">max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">hold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">sub</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b5bd51131eef0f7c145636876455ef7d3d9bd57bb8f40b76c1ef6464d1f3a58a.png" src="_images/b5bd51131eef0f7c145636876455ef7d3d9bd57bb8f40b76c1ef6464d1f3a58a.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">synth</span><span class="o">=</span><span class="n">scat_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">omap</span><span class="p">)</span>
+<span class="n">inscat</span><span class="o">=</span><span class="n">scat_op</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">imap</span><span class="p">)</span>
+<span class="n">inscat</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Input White noise&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Target LSS&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">synth</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Synthesised LSS&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">hold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">norm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/75e234f8b77a9c05e516dcd707973e0e084c8fbee68efe24ff72b9817351746a.png" src="_images/75e234f8b77a9c05e516dcd707973e0e084c8fbee68efe24ff72b9817351746a.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bio-imaging.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction to cloud-optimized bioimaging with OME-Zarr</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="afterword/resources.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Join the community!</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authors-contributors">Authors &amp; Contributors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#authors">Authors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#context">Context</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-method">The method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-further-details-on-the-synthesis-domain-please-refer-to">For further details on the synthesis domain, please refer to:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-of-required-packages">Installation of required packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-in-healpix">Convert Data in HEALPix</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ordering-systems">Ordering Systems</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choose-the-resolution">choose the resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-large-scale-structure-data">Get Large Scale Structure data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialise-foscat-scattering-covariance-description">Initialise FOSCAT scattering covariance description</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-reference-statistics">Compute the reference statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-loss-function">Define the loss function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-the-synthesis-model">Build the synthesis model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-synthesis">Run the synthesis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-the-results">Plot the results</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pangeo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

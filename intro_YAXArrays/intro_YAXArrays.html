@@ -1,0 +1,1078 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>YAXArrays and mapCube in Julia &#8212; EGI 2024 - Pangeo@EOSC demo</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'intro_YAXArrays/intro_YAXArrays';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Raster analysis in Julia" href="../RasterJulia/RasterJulia.html" />
+    <link rel="prev" title="Applying Cross Scattering Transform in Earth Observation imagery to fill missing values" href="../SST_AI.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/pangeo-logo.png" class="logo__image only-light" alt="EGI 2024 - Pangeo@EOSC demo - Home"/>
+    <script>document.write(`<img src="../_static/pangeo-logo.png" class="logo__image only-dark" alt="EGI 2024 - Pangeo@EOSC demo - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    About
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo and EOSC in a nutshell</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../pangeo.html">EOSC and the Pangeo community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../users-getting-started.html">Registration to Pangeo@EOSC</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Pangeo notebook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../pangeo_hvplot.html">Interactive visualization of vegetation indices (NDVI) with HoloViews</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Pytorch notebook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../landslide_xbatcher.html">Rapid Landslide Detection using Synthetic Aperture Radar (SAR) Datacubes</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with ML notebook with tensorflow and Dask</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../SST_AI.html">Applying Cross Scattering Transform in Earth Observation imagery to fill missing values</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Demo with Julia notebook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">YAXArrays and mapCube in Julia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../RasterJulia/RasterJulia.html">Raster analysis in Julia</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo notebook for Bio-imaging</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../bio-imaging.html">Introduction to cloud-optimized bioimaging with OME-Zarr</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Pangeo ML notebook for Astronomy</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../Demo_Synthesis.html">Creating a global map using foscat from a single model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Beyond the demo</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../afterword/resources.html">Join the community!</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../afterword/pythia.html">Project Pythia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../afterword/edsbook.html">Environmental Data Science Book</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://notebooks.gesis.org/binder/v2/gh/pangeo-data/egi2024-demo/main?urlpath=lab/tree/demo/intro_YAXArrays/intro_YAXArrays.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="http://pangeo-eosc.vm.fedcloud.eu/jupyterhub/hub/user-redirect/git-pull?repo=https%3A//github.com/pangeo-data/egi2024-demo&urlpath=lab/tree/egi2024-demo/demo/intro_YAXArrays/intro_YAXArrays.ipynb&branch=main" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/pangeo-data/egi2024-demo" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/pangeo-data/egi2024-demo/issues/new?title=Issue%20on%20page%20%2Fintro_YAXArrays/intro_YAXArrays.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/intro_YAXArrays/intro_YAXArrays.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>YAXArrays and mapCube in Julia</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authors-contributors">Authors &amp; Contributors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook">Notebook</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-remote-data-stored-on-the-cloud-with-yxarrays">Accessing remote data stored on the cloud with YXArrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-a-subset-of-the-global-remote-dataset">select a subset of the global remote dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-local-zarr-for-tutorial">Create local Zarr for tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-dig-into-yaxarrays-jl-and-mapcube">Let’s dig into YAXArrays.jl and mapCube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mapcube-function">The <code class="docutils literal notranslate"><span class="pre">mapCube</span></code> function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-along-single-axis">Apply function along single Axis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-on-all-elements">Apply function on all elements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments-for-inner-function-and-output-dimensions">Arguments for inner function and output dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-with-multiple-output-cubes">Apply function with multiple output cubes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-on-moving-window">Apply function on moving window</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-new-output-dimensions">Define new output dimensions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-variance-and-plot-a-map-of-seasonal-variance">Compute variance and plot a map of seasonal variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-python-or-r-in-inner-function">Use Python or R in inner function</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="yaxarrays-and-mapcube-in-julia">
+<h1>YAXArrays and mapCube in Julia<a class="headerlink" href="#yaxarrays-and-mapcube-in-julia" title="Link to this heading">#</a></h1>
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1f/Julia_Programming_Language_Logo.svg" align="center" width="20%">
+<p>In this lesson, we discuss cover the basics of YAXArray data structures and mapCube in Julia.</p>
+<section id="authors-contributors">
+<h2>Authors &amp; Contributors<a class="headerlink" href="#authors-contributors" title="Link to this heading">#</a></h2>
+<section id="notebook">
+<h3>Notebook<a class="headerlink" href="#notebook" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Felix Cremer, Max Planck Institute for Biogeochemistry (Germany), <a class="reference external" href="https://github.com/felixcremer">&#64;felixcremer</a></p></li>
+</ul>
+</section>
+<section id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Anne Fouilloux, Simula (Norway), <a class="reference external" href="https://github.com/annefou">&#64;annefou</a></p></li>
+</ul>
+<p>This tutorial is based on the Jupyter notebook <a class="reference external" href="https://github.com/JuliaDataCubes/datacubes_in_julia_workshop/blob/main/intro_YAXArrays.ipynb">General introduction to YAXArrays.jl and mapCube</a> from <a class="reference external" href="https://juliadatacubes.github.io/datacubes_in_julia_workshop/">Geospatial data cubes in Julia workshop</a>.</p>
+<div class="alert alert-info">
+<i class="fa-question-circle fa" style="font-size: 22px;color:#666;"></i> Overview
+    <br>
+    <br>
+    <b>Questions</b>
+    <ul>
+        <li>What is YXArrays.jl?</li>
+        <li>What is mapCube and what can I used it for?</li>
+        <li>How can I read and manipulate a Zarr dataset in Julia?</li>
+        <li>How can apply a function to my entire or a portion of my dataset?</li>
+        <li>How can I use Python or R in Julia?</li>
+    </ul>
+    <b>Objectives</b>
+    <ul>
+        <li>Understand YXArrays.jl and mapCube in Julia</li>
+        <li>Read and write Zarr datasets</li>
+        <li>Apply a simple or rather complex function to perform complex data analysis</li>
+    </ul>
+</div><div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Pkg</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">instantiate</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="accessing-remote-data-stored-on-the-cloud-with-yxarrays">
+<h2>Accessing remote data stored on the cloud with YXArrays<a class="headerlink" href="#accessing-remote-data-stored-on-the-cloud-with-yxarrays" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Be aware that opening a dataset with YXArrays does not load the entire dataset in memory;</p></li>
+<li><p>Only metadata set is read and available;</p></li>
+<li><p>As for Xarray in Python, YXArrays in Julia will load data only when needed (e.g. accessed).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">YAXArrays</span>
+<span class="k">using</span><span class="w"> </span><span class="n">Zarr</span>
+<span class="n">era5url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://s3.bgc-jena.mpg.de:9000/deepextremes/v3/ERA5Cube.zarr&quot;</span>
+<span class="n">ds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">open_dataset</span><span class="p">(</span><span class="n">era5url</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="select-a-subset-of-the-global-remote-dataset">
+<h2>select a subset of the global remote dataset<a class="headerlink" href="#select-a-subset-of-the-global-remote-dataset" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">sub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ds</span><span class="p">[</span><span class="n">Ti</span><span class="o">=</span><span class="n">DateTime</span><span class="p">(</span><span class="mi">1998</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">..</span><span class="n">DateTime</span><span class="p">(</span><span class="mi">2022</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">31</span><span class="p">),</span><span class="w"> </span><span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="o">..</span><span class="mf">14.76</span><span class="p">,</span><span class="n">latitude</span><span class="o">=</span><span class="mf">30.1</span><span class="o">..</span><span class="mi">60</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-local-zarr-for-tutorial">
+<h2>Create local Zarr for tutorial<a class="headerlink" href="#create-local-zarr-for-tutorial" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">savedataset</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span><span class="n">path</span><span class="o">=</span><span class="s">&quot;./era5.zarr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">overwrite</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="let-s-dig-into-yaxarrays-jl-and-mapcube">
+<h2>Let’s dig into YAXArrays.jl and mapCube<a class="headerlink" href="#let-s-dig-into-yaxarrays-jl-and-mapcube" title="Link to this heading">#</a></h2>
+<p>So far we have only used <code class="docutils literal notranslate"><span class="pre">mapslices</span></code> in this tutorial. However, this can only cover very simple cases for a single input cube and computations on one or dimensions which either collapse or return the same dimension.</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">DimensionalData</span><span class="p">,</span><span class="w"> </span><span class="n">YAXArrays</span><span class="p">,</span><span class="w"> </span><span class="n">Zarr</span><span class="p">,</span><span class="w"> </span><span class="n">NetCDF</span>
+<span class="k">using</span><span class="w"> </span><span class="n">WGLMakie</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./era5.zarr&quot;</span>
+<span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cube</span><span class="p">(</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">zopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">consolidated</span><span class="o">=</span><span class="nb">true</span><span class="p">,</span><span class="n">fill_as_missing</span><span class="o">=</span><span class="nb">false</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">c</span><span class="p">[</span><span class="n">latitude</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-mapcube-function">
+<h2>The <code class="docutils literal notranslate"><span class="pre">mapCube</span></code> function<a class="headerlink" href="#the-mapcube-function" title="Link to this heading">#</a></h2>
+<p>is a generalization of mapslices, where you can annotate the exact signature of the function to be applied. For example the computation of the <code class="docutils literal notranslate"><span class="pre">median</span></code> over time can be written using <code class="docutils literal notranslate"><span class="pre">mapCube</span></code>.
+Here one hase to specify the dimension(s) that the user-defined function is going to operate on. For the computation of the median over time the only input dimension is <code class="docutils literal notranslate"><span class="pre">time</span></code> and there are no output dimensions as only a single value is returned. The user defined function passed to <code class="docutils literal notranslate"><span class="pre">mapCube</span></code> always has the signature <code class="docutils literal notranslate"><span class="pre">f(outputs...,</span> <span class="pre">inputs...)</span></code> and potentially followd by additional arguments and keyword args.</p>
+</section>
+<section id="apply-function-along-single-axis">
+<h2>Apply function along single Axis<a class="headerlink" href="#apply-function-along-single-axis" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Statistics</span><span class="w"> </span>
+<span class="n">indims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InDims</span><span class="p">(</span><span class="s">&quot;latitude&quot;</span><span class="p">)</span>
+<span class="n">outdims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutDims</span><span class="p">()</span>
+<span class="k">function</span><span class="w"> </span><span class="n">apply_median</span><span class="p">(</span><span class="n">xout</span><span class="p">,</span><span class="w"> </span><span class="n">xin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="n">ismissing</span><span class="p">,</span><span class="w"> </span><span class="n">xin</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="n">isnan</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="c">#@show x</span>
+
+<span class="w">    </span><span class="c">#filter!(!ismissing, x)</span>
+<span class="w">    </span><span class="n">xout</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">isempty</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">missing</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">median</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">medians</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapCube</span><span class="p">(</span><span class="n">apply_median</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">Where</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">))];</span><span class="n">indims</span><span class="p">,</span><span class="w"> </span><span class="n">outdims</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="w"> </span><span class="n">ax</span><span class="p">,</span><span class="w"> </span><span class="n">heat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">heatmap</span><span class="p">(</span><span class="n">DimArray</span><span class="p">(</span><span class="n">medians</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="apply-function-on-all-elements">
+<h2>Apply function on all elements<a class="headerlink" href="#apply-function-on-all-elements" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">medians_kelvin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">273.15</span><span class="p">,</span><span class="w"> </span><span class="n">medians</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function is applied lazily and only computed when the data is worked with. This could be a mapCube operation, saving the data to disk or plotting the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">DimArray</span><span class="p">(</span><span class="n">medians_kelvin</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="arguments-for-inner-function-and-output-dimensions">
+<h2>Arguments for inner function and output dimensions<a class="headerlink" href="#arguments-for-inner-function-and-output-dimensions" title="Link to this heading">#</a></h2>
+<p>Let’s make a slightly more complex computation to demonstrate a case where multiple outputs are generated. For examples, imagine we want to normalize every time series (to zero mean and unit variance), but at the same time return the means and variances in a single dataset for later re-use:</p>
+</section>
+<section id="apply-function-with-multiple-output-cubes">
+<h2>Apply function with multiple output cubes<a class="headerlink" href="#apply-function-with-multiple-output-cubes" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">norm</span><span class="p">(</span><span class="n">ts_out</span><span class="p">,</span><span class="w"> </span><span class="n">mean_out</span><span class="p">,</span><span class="w"> </span><span class="n">std_out</span><span class="p">,</span><span class="w"> </span><span class="n">ts_in</span><span class="p">)</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="n">ismissing</span><span class="p">,</span><span class="w"> </span><span class="n">ts_in</span><span class="p">)</span>
+
+<span class="w">    </span><span class="n">tsshort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">filter</span><span class="p">(</span><span class="o">!</span><span class="n">isnan</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">isempty</span><span class="p">(</span><span class="n">tsshort</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ts_out</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="nb">missing</span>
+<span class="w">        </span><span class="n">mean_out</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">missing</span>
+<span class="w">        </span><span class="n">std_out</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">missing</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">mean_out</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">tsshort</span><span class="p">)</span>
+<span class="w">        </span><span class="n">std_out</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="p">(</span><span class="n">tsshort</span><span class="p">)</span>
+<span class="w">        </span><span class="n">ts_out</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="p">(</span><span class="n">ts_in</span><span class="w"> </span><span class="o">.-</span><span class="w"> </span><span class="n">mean_out</span><span class="p">[])</span><span class="o">./</span><span class="n">std_out</span><span class="p">[]</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">NetCDF</span>
+<span class="n">indims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InDims</span><span class="p">(</span><span class="s">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">od_ts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutDims</span><span class="p">(</span><span class="s">&quot;Time&quot;</span><span class="p">,</span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./normalized_ts.zarr&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="n">backend</span><span class="o">=</span><span class="ss">:zarr</span><span class="p">,</span><span class="n">overwrite</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="n">od_m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutDims</span><span class="p">(</span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./means.nc&quot;</span><span class="p">,</span><span class="n">backend</span><span class="o">=</span><span class="ss">:netcdf</span><span class="p">,</span><span class="w"> </span><span class="n">overwrite</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="n">od_s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutDims</span><span class="p">(</span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;./stds.nc&quot;</span><span class="p">,</span><span class="n">backend</span><span class="o">=</span><span class="ss">:netcdf</span><span class="p">,</span><span class="w"> </span><span class="n">overwrite</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="n">outdims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">od_ts</span><span class="p">,</span><span class="w"> </span><span class="n">od_m</span><span class="p">,</span><span class="w"> </span><span class="n">od_s</span><span class="p">)</span>
+<span class="n">tsnorm</span><span class="p">,</span><span class="w"> </span><span class="n">means</span><span class="p">,</span><span class="w"> </span><span class="n">stds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapCube</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span><span class="n">c</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">Where</span><span class="p">(</span><span class="n">contains</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">))],</span><span class="n">indims</span><span class="o">=</span><span class="n">indims</span><span class="p">,</span><span class="w"> </span><span class="n">outdims</span><span class="o">=</span><span class="n">outdims</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">DimArray</span><span class="p">(</span><span class="n">stds</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="apply-function-on-moving-window">
+<h2>Apply function on moving window<a class="headerlink" href="#apply-function-on-moving-window" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">function</span><span class="w"> </span><span class="n">meanfilter</span><span class="p">(</span><span class="n">xout</span><span class="p">,</span><span class="w"> </span><span class="n">xin</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">ismissing</span><span class="p">(</span><span class="n">xin</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="w">        </span><span class="n">xout</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="nb">missing</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">    </span><span class="n">xout</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="n">mean</span><span class="p">(</span><span class="n">skipmissing</span><span class="p">(</span><span class="n">xin</span><span class="p">))</span>
+<span class="w">    </span><span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">DimArray</span><span class="p">(</span><span class="n">means</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">indims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InDims</span><span class="p">(</span><span class="n">MovingWindow</span><span class="p">(</span><span class="s">&quot;Longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">MovingWindow</span><span class="p">(</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">filteredmeans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapCube</span><span class="p">(</span><span class="n">meanfilter</span><span class="p">,</span><span class="w"> </span><span class="n">means</span><span class="p">,</span><span class="w"> </span><span class="n">indims</span><span class="o">=</span><span class="n">indims</span><span class="p">,</span><span class="w"> </span><span class="n">outdims</span><span class="o">=</span><span class="n">OutDims</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">DimArray</span><span class="p">(</span><span class="n">filteredmeans</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-new-output-dimensions">
+<h2>Define new output dimensions<a class="headerlink" href="#define-new-output-dimensions" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Dates</span>
+<span class="n">pet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;pet&quot;</span><span class="p">),</span>
+<span class="w">        </span><span class="n">lon</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">11.3464</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">46.4946</span><span class="p">)]</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="w"> </span><span class="n">pl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">lookup</span><span class="p">(</span><span class="n">pet</span><span class="p">,</span><span class="w"> </span><span class="n">Ti</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span><span class="n">pet</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So far the function applied here were very simple statistics. Just to stress again, that we are running arbitrary Julia code here, so for example if we want to use some package for time series decomposition like <code class="docutils literal notranslate"><span class="pre">SignalDecomposition.jl</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">SignalDecomposition</span><span class="o">:</span><span class="w"> </span><span class="n">TimeAnomaly</span><span class="p">,</span><span class="w"> </span><span class="n">decompose</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">dc</span><span class="w"> </span>
+<span class="n">dates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lookup</span><span class="p">(</span><span class="n">pet</span><span class="p">,</span><span class="w"> </span><span class="n">Ti</span><span class="p">)</span>
+<span class="n">stlres</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dc</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">pet</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">:</span><span class="p">],</span><span class="n">TimeAnomaly</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="w"> </span><span class="n">stlres</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Axis</span><span class="p">(</span><span class="n">fig</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plot!</span><span class="p">(</span><span class="n">ax2</span><span class="p">,</span><span class="n">stlres</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to apply this over a full array we define the usual Trio: indims, outdims and the function to be applied. Here we create a new dimension for the output. There are 2 types of axes in YAXArrays, <code class="docutils literal notranslate"><span class="pre">CategoricalAxis</span></code> for unordered and <code class="docutils literal notranslate"><span class="pre">RangeAxis</span></code> for ordered dimensions. Here we create a categorical axis for our outputs. This means that inside the function the input array <code class="docutils literal notranslate"><span class="pre">xin</span></code> is a vector with of length <code class="docutils literal notranslate"><span class="pre">n_timesteps</span></code> and the output is a matrix of size <code class="docutils literal notranslate"><span class="pre">n_timesteps</span> <span class="pre">x</span> <span class="pre">3</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="n">Logging</span>
+<span class="n">Logging</span><span class="o">.</span><span class="n">disable_logging</span><span class="p">(</span><span class="n">Logging</span><span class="o">.</span><span class="n">Info</span><span class="p">)</span>
+<span class="n">indims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InDims</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">)</span>
+<span class="n">outdims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OutDims</span><span class="p">(</span><span class="n">dims</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">Ti</span><span class="p">),</span><span class="kt">Dim</span><span class="p">{</span><span class="ss">:Scale</span><span class="p">}([</span><span class="s">&quot;Seasonal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;anomalies&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;trend&quot;</span><span class="p">]),</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;decomposed.zarr&quot;</span><span class="p">,</span><span class="n">backend</span><span class="o">=</span><span class="ss">:zarr</span><span class="p">,</span><span class="w"> </span><span class="n">overwrite</span><span class="o">=</span><span class="nb">true</span><span class="p">)</span>
+<span class="k">function</span><span class="w"> </span><span class="n">decompose_TS</span><span class="p">(</span><span class="n">xout</span><span class="p">,</span><span class="w"> </span><span class="n">xin</span><span class="p">,</span><span class="w"> </span><span class="n">dates</span><span class="p">)</span>
+<span class="w">    </span><span class="n">any</span><span class="p">(</span><span class="n">isnan</span><span class="p">,</span><span class="n">xin</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">xout</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="nb">missing</span>
+<span class="w">    </span><span class="n">seas</span><span class="p">,</span><span class="w"> </span><span class="n">anomaly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dc</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">xin</span><span class="p">,</span><span class="n">TimeAnomaly</span><span class="p">())</span>
+
+<span class="w">    </span><span class="n">xout</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">seas</span>
+<span class="w">    </span><span class="n">xout</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">anomaly</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Logging</span>
+<span class="n">Logging</span><span class="o">.</span><span class="n">disable_logging</span><span class="p">(</span><span class="n">Warn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="nd">@time</span><span class="w"> </span><span class="n">dec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapCube</span><span class="p">(</span><span class="n">decompose_TS</span><span class="p">,</span><span class="w"> </span>
+<span class="w">    </span><span class="n">c</span><span class="p">[</span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;t2m&quot;</span><span class="p">)],</span>
+<span class="w">    </span><span class="n">lookup</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">Ti</span><span class="p">),</span>
+<span class="w">        </span><span class="c">#lon=Near(11.3464),lat=Near(46.4946)],</span>
+<span class="w">    </span><span class="n">indims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">indims</span><span class="p">,</span>
+<span class="w">    </span><span class="n">outdims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">outdims</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">dec</span><span class="p">[</span><span class="n">Scale</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;trend&quot;</span><span class="p">)][</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="w"> </span><span class="n">axseas</span><span class="p">,</span><span class="w"> </span><span class="n">heatyax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="w"> </span><span class="n">lookup</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span><span class="w"> </span><span class="n">Ti</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+<span class="w">    </span><span class="n">dec</span><span class="p">[</span><span class="n">lon</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">11.3464</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">46.4946</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">:</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="compute-variance-and-plot-a-map-of-seasonal-variance">
+<h3>Compute variance and plot a map of seasonal variance<a class="headerlink" href="#compute-variance-and-plot-a-map-of-seasonal-variance" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">scalevar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapslices</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">dec</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="s">&quot;Time&quot;</span><span class="p">)</span>
+<span class="n">scalerange</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapslices</span><span class="p">(</span><span class="n">x</span><span class="o">-&gt;</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">minimum</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="w"> </span><span class="n">dec</span><span class="p">,</span><span class="w"> </span><span class="n">dims</span><span class="o">=</span><span class="s">&quot;Time&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">scalerange</span><span class="p">[</span><span class="n">scale</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;Seasonal&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">heatmap</span><span class="p">(</span><span class="n">scalevar</span><span class="p">[</span><span class="n">scale</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;anomalies&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="use-python-or-r-in-inner-function">
+<h2>Use Python or R in inner function<a class="headerlink" href="#use-python-or-r-in-inner-function" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">PythonCall</span>
+<span class="n">scipyndimage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pyimport</span><span class="p">(</span><span class="s">&quot;scipy.ndimage&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Missings</span>
+<span class="k">function</span><span class="w"> </span><span class="n">gaussian_smooth</span><span class="p">(</span><span class="n">xout</span><span class="p">,</span><span class="w"> </span><span class="n">xin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">missinds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">.!</span><span class="n">ismissing</span><span class="o">.</span><span class="p">(</span><span class="n">xin</span><span class="p">)</span>
+<span class="w">    </span><span class="n">cleanin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disallowmissing</span><span class="p">(</span><span class="n">xin</span><span class="p">[</span><span class="n">missinds</span><span class="p">])</span>
+<span class="w">    </span><span class="n">smooth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scipyndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">cleanin</span><span class="p">,</span><span class="w"> </span><span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="w">    </span><span class="nd">@show</span><span class="w"> </span><span class="n">typeof</span><span class="p">(</span><span class="n">smooth</span><span class="p">)</span>
+<span class="w">    </span><span class="n">xout</span><span class="p">[</span><span class="n">missinds</span><span class="p">]</span><span class="w"> </span><span class="o">.=</span><span class="w"> </span><span class="n">pyconvert</span><span class="p">(</span><span class="kt">Vector</span><span class="p">,</span><span class="w"> </span><span class="n">smooth</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">pet_bozen_2010</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="p">[</span><span class="n">lon</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">11.3464</span><span class="p">),</span><span class="n">lat</span><span class="o">=</span><span class="n">Near</span><span class="p">(</span><span class="mf">46.4946</span><span class="p">),</span>
+<span class="w">    </span><span class="n">time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DateTime</span><span class="p">(</span><span class="mi">2010</span><span class="p">)</span><span class="o">..</span><span class="n">DateTime</span><span class="p">(</span><span class="mi">2011</span><span class="p">),</span>
+<span class="w">    </span><span class="n">Variable</span><span class="o">=</span><span class="n">At</span><span class="p">(</span><span class="s">&quot;pet&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">Missings</span>
+<span class="n">petmem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">disallowmissing</span><span class="p">(</span><span class="n">readcubedata</span><span class="p">(</span><span class="n">pet_bozen_2010</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">nonmissinds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">.!</span><span class="n">ismissing</span><span class="o">.</span><span class="p">(</span><span class="n">petmem</span><span class="p">)</span>
+<span class="n">view</span><span class="p">(</span><span class="n">petmem</span><span class="p">,</span><span class="w"> </span><span class="n">nonmissinds</span><span class="w"> </span><span class="p">)</span>
+<span class="n">disallowmissing</span><span class="p">(</span><span class="n">collect</span><span class="p">(</span><span class="n">petmem</span><span class="p">))</span>
+<span class="n">smooth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scipyndimage</span><span class="o">.</span><span class="n">gaussian_filter</span><span class="p">(</span><span class="n">Py</span><span class="p">(</span><span class="n">petmem</span><span class="p">),</span><span class="w"> </span><span class="n">sigma</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">pyconvert</span><span class="p">(</span><span class="kt">Vector</span><span class="p">,</span><span class="w"> </span><span class="n">smooth</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">smoothcube</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapCube</span><span class="p">(</span><span class="n">gaussian_smooth</span><span class="p">,</span><span class="w"> </span><span class="n">pet_bozen_2010</span><span class="p">,</span><span class="w"> </span><span class="n">indims</span><span class="o">=</span><span class="n">InDims</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">outdims</span><span class="o">=</span><span class="n">OutDims</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-julia notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="w"> </span><span class="n">ax</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines</span><span class="p">(</span><span class="n">pet_bozen_2010</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Original&quot;</span><span class="p">)</span>
+<span class="n">lines!</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">smoothcube</span><span class="p">,</span><span class="w"> </span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Smooth&quot;</span><span class="p">)</span>
+<span class="n">axislegend</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">fig</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "julia-1.10"
+        },
+        kernelOptions: {
+            name: "julia-1.10",
+            path: "./intro_YAXArrays"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'julia-1.10'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../SST_AI.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Applying Cross Scattering Transform in Earth Observation imagery to fill missing values</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../RasterJulia/RasterJulia.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Raster analysis in Julia</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#authors-contributors">Authors &amp; Contributors</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notebook">Notebook</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-remote-data-stored-on-the-cloud-with-yxarrays">Accessing remote data stored on the cloud with YXArrays</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-a-subset-of-the-global-remote-dataset">select a subset of the global remote dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-local-zarr-for-tutorial">Create local Zarr for tutorial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-dig-into-yaxarrays-jl-and-mapcube">Let’s dig into YAXArrays.jl and mapCube</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mapcube-function">The <code class="docutils literal notranslate"><span class="pre">mapCube</span></code> function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-along-single-axis">Apply function along single Axis</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-on-all-elements">Apply function on all elements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arguments-for-inner-function-and-output-dimensions">Arguments for inner function and output dimensions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-with-multiple-output-cubes">Apply function with multiple output cubes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#apply-function-on-moving-window">Apply function on moving window</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-new-output-dimensions">Define new output dimensions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-variance-and-plot-a-map-of-seasonal-variance">Compute variance and plot a map of seasonal variance</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-python-or-r-in-inner-function">Use Python or R in inner function</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Pangeo
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
